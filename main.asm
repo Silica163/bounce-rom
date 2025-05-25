@@ -7,15 +7,13 @@
 %define SIZE 14
 %define DELAY 0x00
 
-    mov ah, 0x00
+    xor ah, ah
     mov al, 0x0013
     int 0x10            ; mode 13h display
 
     mov ax, 0xa000
     mov es, ax          ; es -> video buffer
     
-    mov bx, 0
-
 mainloop:
 
 ;    call clear
@@ -48,7 +46,7 @@ mainloop:
         cmp [y], ax
     jne .next_row
 
-    mov dx, 0
+    xor dx, dx
 
     mov ax, [box_y]
     mov bx, [box_dy]
@@ -103,15 +101,15 @@ bounce:
     cmp ax, 0
     je .neg
     jmp .done
-    .neg:
-        neg bx
+.neg:
+    neg bx
 .done:
     add ax, bx
     ret
 
 _wait:
-    mov bx, 0
-    mov al, 0x0
+    xor bx, bx
+    xor al, al
     mov ah, 0x86
     mov cx, DELAY
     int 0x15
@@ -120,7 +118,7 @@ _wait:
 clear:
     ; al => background color
     ; cx => bytes to write
-    mov di, 0
+    xor di, di
     mov al, 0x18
     mov cx, 64000
     rep stosb      ; fill [es:di] with [al] <cx> times
