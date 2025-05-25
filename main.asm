@@ -120,12 +120,9 @@ _wait:
     ret
 
 clear:
-    mov bx, 0
-    .next:
-        mov byte [es:bx], 0x00
-        inc bx
-        cmp bx, 64000
-    jne .next
+    mov al, 0x18
+    mov cx, 64000
+    rep stosb
     ret
 
 color: db 0x0
