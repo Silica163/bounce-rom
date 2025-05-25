@@ -13,16 +13,14 @@
     
     mov bx, 0
 
-    mov byte [color], 0x38
-
 mainloop:
 
 ;    call clear
     mov ax, [box_y]
-    mov word [y], ax
+    mov [y], ax
     .next_row:
         mov ax, [box_x]
-        mov word [x], ax
+        mov [x], ax
 
         .next_col:
 
@@ -32,19 +30,19 @@ mainloop:
             add bx, [x]
 
             mov al, [color]
-            mov byte [es:bx], al
+            mov [es:bx], al
 
             inc word [x]
 
             mov ax, [box_x]
             add ax, SIZE
-            cmp word [x], ax
+            cmp [x], ax
         jne .next_col
         
         inc word [y]
         mov ax, [box_y]
         add ax, SIZE
-        cmp word [y], ax
+        cmp [y], ax
     jne .next_row
 
     mov dx, 0
@@ -55,13 +53,13 @@ mainloop:
     call bounce
     mov word [box_y], ax
 
-    cmp byte [inv_y], bl
+    cmp [inv_y], bl
     je .ynotchange
 
     mov dx, 1
     
 .ynotchange:
-    mov byte [inv_y], bl
+    mov [inv_y], bl
 
     mov ax, [box_x]
     mov bl, [inv_x]
@@ -69,13 +67,13 @@ mainloop:
     call bounce
     mov word [box_x], ax
     
-    cmp byte [inv_x], bl
+    cmp [inv_x], bl
     je .xnotchange
 
     mov dx, 1
     
 .xnotchange:
-    mov byte [inv_x], bl
+    mov [inv_x], bl
 
     cmp dx, 0
     je .next
@@ -83,10 +81,10 @@ mainloop:
     mov al, [color]
     inc al
     cmp al, 0x50
-    mov byte [color], al
+    mov [color], al
     jle .next
     sub al, 0x18
-    mov byte [color], al
+    mov [color], al
 
 .next:
     call _wait
@@ -128,7 +126,7 @@ clear:
     rep stosb      ; fill [es:di] with [al] <cx> times
     ret
 
-color: db 0x0
+color: db 0x38
 
 inv_x: db 0
 inv_y: db 0
