@@ -51,32 +51,32 @@ mainloop:
     mov dx, 0
 
     mov ax, [box_y]
-    mov bl, [inv_y]
+    mov bx, [box_dy]
     mov cx, HEIGHT - SIZE
     call bounce
     mov word [box_y], ax
 
-    cmp [inv_y], bl
+    cmp [box_dy], bx
     je .ynotchange
 
     mov dx, 1
     
 .ynotchange:
-    mov [inv_y], bl
+    mov [box_dy], bx
 
     mov ax, [box_x]
-    mov bl, [inv_x]
+    mov bx, [box_dx]
     mov cx, WIDTH - SIZE
     call bounce
     mov word [box_x], ax
     
-    cmp [inv_x], bl
+    cmp [box_dx], bx
     je .xnotchange
 
     mov dx, 1
     
 .xnotchange:
-    mov [inv_x], bl
+    mov [box_dx], bx
 
     cmp dx, 0
     je .next
@@ -94,22 +94,19 @@ mainloop:
     jmp mainloop
 
 bounce:
-    cmp bl, 1
-    je .dec
-        inc ax
-        cmp ax, cx
-        je .back
-            jmp .done
-        .back:
-            mov bl, 1
-    .dec:
-        dec ax
-        cmp ax, 0
-        je .forward
-            jmp .done
-        .forward:
-            mov bl, 0
-    .done:
+    ; bx, position_dx
+    ; ax, position
+    ; cx, edge
+
+    cmp ax, cx
+    je .neg
+    cmp ax, 0
+    je .neg
+    jmp .done
+    .neg:
+        neg bx
+.done:
+    add ax, bx
     ret
 
 _wait:
@@ -131,8 +128,8 @@ clear:
 
 color: db 0x38
 
-inv_x: db 0
-inv_y: db 0
+box_dx: dw 1
+box_dy: dw 1
 
 x: dw 0x0
 y: dw 0x0
