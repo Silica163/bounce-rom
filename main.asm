@@ -120,9 +120,12 @@ _wait:
     ret
 
 clear:
+    ; al => background color
+    ; cx => bytes to write
+    mov di, 0
     mov al, 0x18
     mov cx, 64000
-    rep stosb
+    rep stosb      ; fill [es:di] with [al] <cx> times
     ret
 
 color: db 0x0
