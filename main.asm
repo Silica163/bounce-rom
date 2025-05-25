@@ -1,4 +1,7 @@
     org 0x7c00
+%define SCREEN_WIDTH 320
+%define SCREEN_HEIGHT 200
+
 %define WIDTH 320
 %define HEIGHT 200
 %define SIZE 14
@@ -26,7 +29,7 @@ mainloop:
 
             mov bx, 0
             mov bx, [y]
-            imul bx, WIDTH
+            imul bx, SCREEN_WIDTH
             add bx, [x]
 
             mov al, [color]
