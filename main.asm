@@ -17,30 +17,35 @@
 mainloop:
 
 ;    call clear
+
     mov ax, [box_y]
     mov [y], ax
     .next_row:
-        mov ax, [box_x]
-        mov [x], ax
+
+        mov bx, [y]
+        imul bx, SCREEN_WIDTH
+
+        mov cx, [box_x]
 
         .next_col:
+            push bx
 
-            mov bx, 0
-            mov bx, [y]
-            imul bx, SCREEN_WIDTH
-            add bx, [x]
+            add bx, cx
 
             mov al, [color]
             mov [es:bx], al
 
-            inc word [x]
+            inc cx
 
             mov ax, [box_x]
             add ax, SIZE
-            cmp [x], ax
+            cmp cx, ax
+
+            pop bx
         jne .next_col
         
         inc word [y]
+
         mov ax, [box_y]
         add ax, SIZE
         cmp [y], ax
@@ -129,7 +134,6 @@ color: db 0x38
 box_dx: dw 1
 box_dy: dw 1
 
-x: dw 0x0
 y: dw 0x0
 
 box_x: dw (WIDTH - SIZE)/2
