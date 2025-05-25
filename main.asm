@@ -22,28 +22,16 @@ mainloop:
     mov [y], ax
     .next_row:
 
-        mov bx, [y]
-        imul bx, SCREEN_WIDTH
+        mov di, [y]
+        imul di, SCREEN_WIDTH
+        add di, [box_x]
 
-        mov cx, [box_x]
+        mov cx, SIZE - 1
 
-        .next_col:
-            push bx
+        mov al, [color]
+        rep stosb
+        sub di, cx
 
-            add bx, cx
-
-            mov al, [color]
-            mov [es:bx], al
-
-            inc cx
-
-            mov ax, [box_x]
-            add ax, SIZE
-            cmp cx, ax
-
-            pop bx
-        jne .next_col
-        
         inc word [y]
 
         mov ax, [box_y]
