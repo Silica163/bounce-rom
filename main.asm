@@ -137,8 +137,8 @@ inv_y: db 0
 x: dw 0x0
 y: dw 0x0
 
-box_x: dw 0x00
-box_y: dw 0x00
+box_x: dw (WIDTH - SIZE)/2
+box_y: dw (HEIGHT - SIZE)/2
 
     times 510 - ($-$$) db 0
     dw 0xaa55
