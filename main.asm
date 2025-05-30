@@ -35,36 +35,38 @@ mainloop:
         dec bx
     jnz .next_row
 
-    xor dx, dx
+    xor dx, dx ; bounce checker
 
-    mov ax, [box_y]
+; bounce y
     mov bx, [box_dy]
-    mov cx, HEIGHT - SIZE
-    call bounce
-    mov word [box_y], ax
-
-    cmp [box_dy], bx
-    je .ynotchange
-
+    cmp word [box_y], HEIGHT - SIZE
+    je .negy
+    cmp word [box_y], 0
+    je .negy
+    jmp .doney
+.negy:
+    neg bx
     mov dx, 1
-    
-.ynotchange:
+.doney:
+    add word [box_y], bx
     mov [box_dy], bx
 
-    mov ax, [box_x]
+; bounce x
     mov bx, [box_dx]
-    mov cx, WIDTH - SIZE
-    call bounce
-    mov word [box_x], ax
-    
-    cmp [box_dx], bx
-    je .xnotchange
-
+    cmp word [box_x], WIDTH - SIZE
+    je .negx
+    cmp word [box_x], 0
+    je .negx
+    jmp .donex
+.negx:
+    neg bx
     mov dx, 1
-    
-.xnotchange:
+.donex:
+    add word [box_x], bx
     mov [box_dx], bx
 
+
+; if bounced, change color
     cmp dx, 0
     je .next
 
@@ -76,22 +78,6 @@ mainloop:
 .next:
     call _wait
     jmp mainloop
-
-bounce:
-    ; bx, position_dx
-    ; ax, position
-    ; cx, edge
-
-    cmp ax, cx
-    je .neg
-    cmp ax, 0
-    je .neg
-    jmp .done
-.neg:
-    neg bx
-.done:
-    add ax, bx
-    ret
 
 _wait:
     xor bx, bx
