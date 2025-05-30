@@ -1,6 +1,6 @@
 # Boot Sector Screen Saver
 
-<video src="./preview.mp4" type="video.mp4">
+https://github.com/user-attachments/assets/1af625af-cf17-4fc6-9b6b-ab8a30978322
 
 ## Dependencies
 
