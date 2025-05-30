@@ -18,26 +18,22 @@ mainloop:
 
 ;    call clear
 
-    mov ax, [box_y]
-    mov [y], ax
+    mov di, [box_y]
+    imul di, SCREEN_WIDTH
+    add di, [box_x]
+
+    mov bx, SIZE
+    mov cx, bx
+    mov al, [color]
+
     .next_row:
+        push cx
+            rep stosb
+        pop cx
 
-        mov di, [y]
-        imul di, SCREEN_WIDTH
-        add di, [box_x]
-
-        mov cx, SIZE - 1
-
-        mov al, [color]
-        rep stosb
-        sub di, cx
-
-        inc word [y]
-
-        mov ax, [box_y]
-        add ax, SIZE
-        cmp [y], ax
-    jne .next_row
+        add di, SCREEN_WIDTH - SIZE
+        dec bx
+    jnz .next_row
 
     xor dx, dx
 
@@ -72,13 +68,10 @@ mainloop:
     cmp dx, 0
     je .next
 
-    mov al, [color]
-    inc al
-    cmp al, 0x50
-    mov [color], al
+    inc byte [color]
+    cmp byte [color], 0x50
     jle .next
-    sub al, 0x18
-    mov [color], al
+    sub byte [color], 0x18
 
 .next:
     call _wait
@@ -121,8 +114,6 @@ color: db 0x38
 
 box_dx: dw 1
 box_dy: dw 1
-
-y: dw 0x0
 
 box_x: dw (WIDTH - SIZE)/2
 box_y: dw (HEIGHT - SIZE)/2
