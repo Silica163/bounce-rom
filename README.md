@@ -1,6 +1,6 @@
 # Boot Sector Screen Saver
 
-![](./preview.mp4)
+<video src="./preview.mp4" type="video.mp4">
 
 ## Dependencies
 
