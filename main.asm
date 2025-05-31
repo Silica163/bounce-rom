@@ -22,20 +22,29 @@ mainloop:
     imul di, SCREEN_WIDTH
     add di, [box_x]
 
+    ; bx for rows
+    ; cx for columns
     mov bx, SIZE
     mov cx, bx
     mov al, [color]
 
+    ; fill row by row
     .next_row:
         push cx
             rep stosb
+            ; while(cx > 0) es[di+=cx] = al;
         pop cx
 
+        ; di = box_y * SCREEN_WIDTH + box_x + SIZE
+        ; instruction below is for increment render row by 1 (go to next row)
         add di, SCREEN_WIDTH - SIZE
         dec bx
     jnz .next_row
 
     xor dx, dx ; bounce checker
+
+; bounce logic
+; if value = edge : negate its velocity.
 
 ; bounce y
     mov bx, [box_dy]
