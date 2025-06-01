@@ -32,7 +32,7 @@ mainloop:
     .next_row:
         push cx
             rep stosb
-            ; while(cx > 0) es[di+=cx] = al;
+            ; while(cx-- > 0) es[di++] = al;
         pop cx
 
         ; di = box_y * SCREEN_WIDTH + box_x + SIZE
